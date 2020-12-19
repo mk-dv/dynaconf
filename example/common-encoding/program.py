@@ -155,7 +155,8 @@ print("DONT WORRY: if you dont like the `@type` strategy you can disable it")
 print("and perform the explicit cast when reading")
 print('>>> connect(..., settings.as_int("PORT"), ...)')
 print(
-    "types: @int|.as_int, @float|.as_float, @bool|.as_bool and @json|.as_json"
+    "types: @int|.as_int, @float|.as_float, @bool|.as_bool, @path|.as_path and"
+    "@json|.as_json"
 )
 
 print("#" * 79)

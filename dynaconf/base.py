@@ -394,7 +394,7 @@ class Settings:
 
         :param key: The name of the setting value, will always be upper case
         :param default: In case of not found it will be returned
-        :param cast: Should cast in to @int, @float, @bool or @json ?
+        :param cast: Should cast in to @int, @float, @bool, @json or @path ?
         :param fresh: Should reload from loaders store before access?
         :param dotted_lookup: Should perform dotted-path lookup?
         :param parent: Is there a pre-loaded parent in a nested data?
@@ -449,7 +449,7 @@ class Settings:
 
         :param key: The name of the setting value, will always be upper case
         :param default: In case of not found it will be returned
-        :param cast: Should cast in to @int, @float, @bool or @json ?
+        :param cast: Should cast in to @int, @float, @bool, @json or @path ?
         :return: The value if found, default or None
         """
         return self.get(key, default=default, cast=cast, fresh=True)
@@ -459,7 +459,7 @@ class Settings:
 
         :param key: The name of the setting value, will always be upper case
         :param default: In case of not found it will be returned
-        :param cast: Should cast in to @int, @float, @bool or @json ?
+        :param cast: Should cast in to @int, @float, @bool, @json or @path ?
          or cast must be true to use cast inference
         :return: The value if found, default or None
         """
@@ -491,6 +491,10 @@ class Settings:
     def as_json(self, key):
         """Partial method for get with json cast"""
         return self.get(key, cast="@json")
+
+    def as_path(self, key):
+        """Partial method for get with path cast"""
+        return self.get(key, cast="@path")
 
     @property
     def loaded_envs(self):

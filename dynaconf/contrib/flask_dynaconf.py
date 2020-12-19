@@ -32,8 +32,8 @@ class FlaskDynaconf:
                                 # get is case insensitive
                                 app.config['SQL_PORT']
 
-                            Dynaconf uses `@int, @bool, @float, @json` to cast
-                            env vars
+                            Dynaconf uses `@int, @bool, @float, @json, @path`
+                            to cast env vars
 
         SETTINGS_FILE_FOR_DYNACONF = The name of the module or file to use as
                                     default to load settings. If nothing is

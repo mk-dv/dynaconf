@@ -3,6 +3,7 @@ import os
 import re
 import warnings
 from functools import wraps
+from pathlib import Path
 
 from dynaconf.utils import extract_json_objects
 from dynaconf.utils import multi_replace
@@ -141,6 +142,11 @@ class BaseFormatter:
         return str(self.token)
 
 
+class PathFormatter(BaseFormatter):
+    def __call__(self, value, **context):
+        return Path(self.function(value, **context))
+
+
 def _jinja_formatter(value, **context):
     if jinja_env is None:  # pragma: no cover
         raise ImportError(
@@ -154,6 +160,7 @@ class Formatters:
 
     python_formatter = BaseFormatter(str.format, "format")
     jinja_formatter = BaseFormatter(_jinja_formatter, "jinja")
+    path_formatter = PathFormatter(str.format, "format")
 
 
 class Lazy:
@@ -215,6 +222,7 @@ converters = {
     "@json": json.loads,
     "@format": lambda value: Lazy(value),
     "@jinja": lambda value: Lazy(value, formatter=Formatters.jinja_formatter),
+    "@path": lambda value: Lazy(value, formatter=Formatters.path_formatter),
     # Meta Values to trigger pre assignment actions
     "@reset": Reset,  # @reset is DEPRECATED on v3.0.0
     "@del": Del,
@@ -250,7 +258,7 @@ def parse_with_toml(data):
 
 def _parse_conf_data(data, tomlfy=False, box_settings=None):
     """
-    @int @bool @float @json (for lists and dicts)
+    @int @bool @float @json @path (for lists and dicts)
     strings does not need converters
 
     export DYNACONF_DEFAULT_THEME='material'
@@ -259,6 +267,7 @@ def _parse_conf_data(data, tomlfy=False, box_settings=None):
     export DYNACONF_PAGINATION_PER_PAGE='@int 20'
     export DYNACONF_MONGODB_SETTINGS='@json {"DB": "quokka_db"}'
     export DYNACONF_ALLOWED_EXTENSIONS='@json ["jpg", "png"]'
+    export DYNACONF_BASE_DIR='@path "/tmp/bla.py"
     """
     # not enforced to not break backwards compatibility with custom loaders
     box_settings = box_settings or {}

@@ -25,7 +25,7 @@
 ### Install
 
 ```bash
-$ pip install dynaconf
+$ pip install git+https://github.com/mk-dv/dynaconf.git#egg=dynaconf
 ```
 
 #### Initialize Dynaconf on project root directory
